@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
+import ActivityList from './ActivityList';
+import { Activity } from './ActivityList';
+
+interface User {
+    id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    username: string;
+    password: string;
+    activities: Activity[];
+  }
 
 const LoginForm: React.FC = () => {
-const [loginData, setLoginData] = useState({
+const [loginData, setLoginData] = useState<User>({
+    id: '',
+    firstname: '',
+    lastname: '',
+    email: '',
     username: '',
-    password: ''
+    password: '',
+    activities:[]
 });
 
 const [loginError, setLoginError] = useState<string | null>(null);
+const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,6 +45,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         });
         if(res.ok){
             console.log('Login successful');
+            setIsLoggedIn(true);
         }else{
             console.log('Login failed');
             setLoginError('Felaktigt användarnamn eller lösenord');
@@ -35,9 +54,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     console.error('Error logging in', error);
     setLoginError('Any error occured on login. Please try again later');
    }
+   
+}
+const handleSaveActivities = (updatedUser: User) => {
+    // Logic to handle saving activities
+    console.log('Saving activities...', updatedUser);
 }
 
     return(
+       <div>
+        {!isLoggedIn && (
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="username">Användarnamn:</label>
@@ -64,6 +90,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             {loginError && <p style={{color: 'red'}}>{loginError}</p>}
             <button type='submit'>logga in</button>
             </form>
+            )}
+            {isLoggedIn && <ActivityList user={loginData} onSave={handleSaveActivities}/>}
+       </div>
+        
+        
      
     );
 };

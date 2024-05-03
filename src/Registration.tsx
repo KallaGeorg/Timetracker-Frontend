@@ -35,6 +35,7 @@ const RegistrationForm: React.FC = () => {
                 setRegistrationStatus('success');
                 resetForm();
                 console.log('Registration status:', registrationStatus);
+              
             }else{
                 console.error('Error posting user');
                 setRegistrationStatus('error');
@@ -60,7 +61,7 @@ const RegistrationForm: React.FC = () => {
              {registrationStatus === 'success'?(
                  <>
                  
-                <p>Registrering lyckades! Du kan nu logga in.</p>
+                {/* <p>Registrering lyckades! Du kan nu logga in.</p> */}
                 <LoginForm/>
                  </>
              ):(
