@@ -1,37 +1,25 @@
 import React, { useState } from 'react';
-import ActivityList from './ActivityList';
-import { Activity } from './ActivityList';
+import { User } from './AuthPage';
 
-interface User {
-    id: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    username: string;
-    password: string;
-    activities: Activity[];
+  interface LoginFormProps {
+    onLoginSuccess: (user:User) => void;
   }
 
-const LoginForm: React.FC = () => {
-const [loginData, setLoginData] = useState<User>({
-    id: '',
-    firstname: '',
-    lastname: '',
-    email: '',
-    username: '',
-    password: '',
-    activities:[]
-});
+const LoginForm: React.FC<LoginFormProps> = ({onLoginSuccess}) => {
 
+const [username, setUsername] = useState('');
+const [password, setPassword] = useState('');
 const [loginError, setLoginError] = useState<string | null>(null);
-const [isLoggedIn, setIsLoggedIn] = useState(false);
+// const [isLoggedIn, setIsLoggedIn] = useState(false);
+// const [showRegistrationForm, setShowRegistrationForm] = useState(false);
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginData(prevState => ({
-        ...prevState,
-        [name]: value
-    }));
+    if (name === 'username') {
+        setUsername(value);
+    } else if (name === 'password') {
+        setPassword(value);
+    }
 }
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,14 +29,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(loginData)
+            body: JSON.stringify({username, password})  
         });
+        
         if(res.ok){
-            console.log('Login successful');
-            setIsLoggedIn(true);
+             const user: User = await res.json();
+            onLoginSuccess(user);
+           
         }else{
             console.log('Login failed');
-            setLoginError('Felaktigt användarnamn eller lösenord');
+            setLoginError('Felaktigt lösenord eller användernamn');
         }
    }catch(error){
     console.error('Error logging in', error);
@@ -56,14 +46,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
    }
    
 }
-const handleSaveActivities = (updatedUser: User) => {
-    // Logic to handle saving activities
-    console.log('Saving activities...', updatedUser);
-}
+// const handleSaveActivities = (updatedUser: User) => {
+//     console.log('Saving activities...', updatedUser);
+// }
 
     return(
        <div>
-        {!isLoggedIn && (
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="username">Användarnamn:</label>
@@ -71,7 +59,7 @@ const handleSaveActivities = (updatedUser: User) => {
                  type="text"
                  id='username'
                  name='username'
-                 value={loginData.username}
+                 value={username}
                  onChange={handleChange}
                  required
                   />
@@ -82,7 +70,7 @@ const handleSaveActivities = (updatedUser: User) => {
                  type="password"
                  id='password'
                  name='password'
-                 value={loginData.password}
+                 value={password}
                  onChange={handleChange}
                  required
                   />
@@ -90,11 +78,9 @@ const handleSaveActivities = (updatedUser: User) => {
             {loginError && <p style={{color: 'red'}}>{loginError}</p>}
             <button type='submit'>logga in</button>
             </form>
-            )}
-            {isLoggedIn && <ActivityList user={loginData} onSave={handleSaveActivities}/>}
-       </div>
+            {/* {!showRegistrationForm && (<button onClick={() => setShowRegistrationForm(true)}>registrera</button> */}
         
-        
+       </div>  
      
     );
 };

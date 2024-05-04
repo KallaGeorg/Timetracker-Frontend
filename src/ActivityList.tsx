@@ -1,20 +1,12 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import { User } from "./AuthPage";
 export interface Activity{
     id:string;
     name:string;
     duration:number;
   
 }
-interface User{
-    id:string;
-    firstname:string;
-    lastname:string;
-    email:string;
-    username:string;
-    password:string;
-    activities:Activity[];
-}
+
 interface Props {
     user: User;
     onSave: (updatedUser: User) => void;
@@ -22,18 +14,30 @@ interface Props {
 
 const ActivityList: React.FC<Props> = ({user, onSave}) => {
     const [newActivity, setNewActivity] = useState<string>('');
-    const [activities, setActivities] = useState<Activity[]>(user.activities);
+    const [activities, setActivities] = useState<Activity[]>([]);
 
+    useEffect(() => {
+        if(user.activities){
+            setActivities(user.activities);
+        }
+       
+    },[user.activities]);
     const handleAddActivity = () => {
         if (newActivity.trim() !== '') {
-        const updatedActivities =[
-            ...activities,
-            {id:String(Date.now()), name:newActivity, duration:0}
-        ];
-        setActivities(updatedActivities);
-        setNewActivity('');
-    }
+            const newActivityObj = {
+                id: String(Date.now()),
+                name: newActivity,
+                duration: 0
+            };
+            const updatedActivities = [
+                ...activities,
+                newActivityObj
+            ];
+            setActivities(updatedActivities);
+            setNewActivity('');
+        }
     };
+    
     const handleDeleteActivity = (id: string) => {
         const updatedActivities = activities.filter((activity) => activity.id !== id);
         setActivities(updatedActivities);
@@ -47,8 +51,8 @@ const ActivityList: React.FC<Props> = ({user, onSave}) => {
             ...user,
             activities: activities
         };
-        fetch('http://localhost:8080/user', {
-            method: 'POST',
+        fetch(`http://localhost:8080/user/${user.id}`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -61,7 +65,11 @@ const ActivityList: React.FC<Props> = ({user, onSave}) => {
             console.log('Activities saved successfully');
             return res.json();
         })
-        .then((updatedUser: User)=>{
+        .then(updatedUserData =>{
+            const updatedUser: User = {
+                ...user,
+                activities:updatedUserData.activities
+            };
             onSave(updatedUser);
         })
         .catch(error =>{

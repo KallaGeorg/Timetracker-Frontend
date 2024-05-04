@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import LoginForm from "./LoginForm";
+import { User } from "./AuthPage";
 
-const RegistrationForm: React.FC = () => {
-    const [formData, setFormData] = useState({
+
+interface RegistrationFormProps{
+    onLoginSuccess:(user: User) => void;
+}
+const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => {
+    const [formData, setFormData] = useState<User>({
+        
         firstname:'',
         lastname:'',
         email:'',
         username:'',
-        password:''
+        password:'',
+    
     });
     const [registrationStatus, setRegistrationStatus] = useState<'pending'|'success'|'error'>('pending');
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -32,8 +40,13 @@ const RegistrationForm: React.FC = () => {
 
             if(res.ok){
                 console.log('User posted successfully');
+                const user: User = await res.json();
+                onLoginSuccess(user);
                 setRegistrationStatus('success');
                 resetForm();
+               
+             
+                setRedirectToLogin(true);
                 console.log('Registration status:', registrationStatus);
               
             }else{
@@ -47,24 +60,23 @@ const RegistrationForm: React.FC = () => {
         };
         const resetForm = () => {
             setFormData({
+                
                 firstname: '',
                 lastname: '',
                 email: '',
                 username: '',
-                password: ''    
-            })
+                password: '',   
+                
+            });
          
             
+        };
+        if(redirectToLogin){
+            <LoginForm onLoginSuccess={onLoginSuccess}/>
         }
+        
         return(
-            <>
-             {registrationStatus === 'success'?(
-                 <>
-                 
-                {/* <p>Registrering lyckades! Du kan nu logga in.</p> */}
-                <LoginForm/>
-                 </>
-             ):(
+           
            
      <form onSubmit={handleSubmit}>
                 <input
@@ -110,9 +122,7 @@ const RegistrationForm: React.FC = () => {
                     <button type="submit">Registrera</button>
                     {registrationStatus === 'error' && <p>Registrering misslyckades!</p>}
             </form>
-             )}
-            </>
-           
+              
         );
     };
 export default RegistrationForm;
