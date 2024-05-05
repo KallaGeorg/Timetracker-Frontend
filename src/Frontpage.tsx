@@ -1,5 +1,5 @@
  import { useState } from "react";
-import AuthPage from "./AuthPage";
+import LoginAndRegistration from "./LoginAndRegistration";
 
 
 const Frontpage = () => {
@@ -26,7 +26,7 @@ const Frontpage = () => {
         ):(
             <button onClick={handleLogoutClick}>Logout</button>
         )}
-        {showAuthPage && <AuthPage onLoginSuccessful={handleLoginSuccess} onLogout={() => setIsLoggedIn(false)}/>}
+        {showAuthPage && <LoginAndRegistration onLoginSuccess={handleLoginSuccess} onLogout={() => setIsLoggedIn(false)}/>}
      
         </>
         

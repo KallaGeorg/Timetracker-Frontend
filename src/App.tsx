@@ -5,6 +5,7 @@ import Frontpage from './Frontpage'
 import './App.css'
 
 function App() {
+  console.log('App render');
   
 return(
   <Router>

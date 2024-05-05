@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { User } from './AuthPage';
+import { User } from './Menue';
 
   interface LoginFormProps {
     onLoginSuccess: (user:User) => void;
   }
 
-const LoginForm: React.FC<LoginFormProps> = ({onLoginSuccess}) => {
+const LoginForm: React.FC<LoginFormProps> = React.memo(({onLoginSuccess}) => {
+    console.log('LoginForm render');
 
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [loginError, setLoginError] = useState<string | null>(null);
-// const [isLoggedIn, setIsLoggedIn] = useState(false);
-// const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,7 +21,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(value);
     }
 }
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
         const res = await fetch('http://localhost:8080/user/login', {
@@ -45,12 +45,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoginError('Any error occured on login. Please try again later');
    }
    
-}
-// const handleSaveActivities = (updatedUser: User) => {
-//     console.log('Saving activities...', updatedUser);
-// }
+};
 
-    return(
+
+    return (
+        
+    
        <div>
         <form onSubmit={handleSubmit}>
             <div>
@@ -78,10 +78,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             {loginError && <p style={{color: 'red'}}>{loginError}</p>}
             <button type='submit'>logga in</button>
             </form>
-            {/* {!showRegistrationForm && (<button onClick={() => setShowRegistrationForm(true)}>registrera</button> */}
-        
        </div>  
-     
     );
-};
+    
+});
 export default LoginForm;

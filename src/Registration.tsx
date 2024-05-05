@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import LoginForm from "./LoginForm";
-import { User } from "./AuthPage";
+import { User } from "./Menue";
 
 
 interface RegistrationFormProps{
     onLoginSuccess:(user: User) => void;
 }
 const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => {
+    console.log('RegistrationForm render');
     const [formData, setFormData] = useState<User>({
         
         firstname:'',
@@ -17,7 +17,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
     
     });
     const [registrationStatus, setRegistrationStatus] = useState<'pending'|'success'|'error'>('pending');
-    const [redirectToLogin, setRedirectToLogin] = useState(false);
+   
+   
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -44,10 +45,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
                 onLoginSuccess(user);
                 setRegistrationStatus('success');
                 resetForm();
-               
-             
-                setRedirectToLogin(true);
+                
+                
+                   
+                
+            
                 console.log('Registration status:', registrationStatus);
+               
               
             }else{
                 console.error('Error posting user');
@@ -71,12 +75,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
          
             
         };
-        if(redirectToLogin){
-            <LoginForm onLoginSuccess={onLoginSuccess}/>
-        }
+      
         
         return(
-           
+           <>
            
      <form onSubmit={handleSubmit}>
                 <input
@@ -122,7 +124,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
                     <button type="submit">Registrera</button>
                     {registrationStatus === 'error' && <p>Registrering misslyckades!</p>}
             </form>
-              
+             
+              </>
         );
     };
 export default RegistrationForm;

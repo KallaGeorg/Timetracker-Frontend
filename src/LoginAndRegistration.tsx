@@ -1,22 +1,15 @@
-import React, { useState } from "react";
-import ActivityList, { Activity } from "./ActivityList";
+import React, { useEffect, useState } from "react";
 import RegistrationForm from "./Registration";
 import LoginForm from "./LoginForm";
-export interface User {
-    id?: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    username: string;
-    password: string;
-    activities?: Activity[];
-}
-interface AuthPageProps {
-    onLoginSuccessful: (user: User) => void;
+import Menue from "./Menue";
+import { User } from "./Menue";
+interface LoginAndRegistrationProps {
+    onLoginSuccess: (user: User) => void;
     onLogout: () => void;
    
 }
-const AuthPage: React.FC<AuthPageProps> = ({onLoginSuccessful }) => {
+const LoginAndRegistration: React.FC<LoginAndRegistrationProps> = ({ onLoginSuccess }) => {
+    
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const[loginData, setLoginData] = useState<User | null>(null);
     const [showRegistration, setShowRegistration] = useState(false);
@@ -24,16 +17,18 @@ const AuthPage: React.FC<AuthPageProps> = ({onLoginSuccessful }) => {
     const handleLoginSuccess = (user: User) => {
         setIsLoggedIn(true);
         setLoginData({...user, activities: []});
-        onLoginSuccessful(user);
+        onLoginSuccess(user);
     };
  
     
     const handleToggleRegistration = () => {
         setShowRegistration(!showRegistration);
     };
-    const handleSaveUser =(updatedUser: User) => {
-        setLoginData(updatedUser);
-    }
+    
+    useEffect(() => {
+        console.log("LoginAndRegistration component re-rendered");
+    },[]);
+    
     return (
         <div>
             {!isLoggedIn && !showRegistration && (
@@ -42,7 +37,7 @@ const AuthPage: React.FC<AuthPageProps> = ({onLoginSuccessful }) => {
             {!isLoggedIn && showRegistration && (
                 <RegistrationForm onLoginSuccess={handleLoginSuccess} /> 
             )}
-            {isLoggedIn && <ActivityList user={loginData!} onSave={handleSaveUser}/>}
+            {isLoggedIn && <Menue user={loginData!} />}
             {!isLoggedIn && (
              <button onClick={handleToggleRegistration}>
                 {showRegistration ? "logga in" : "registrera"}
@@ -52,4 +47,4 @@ const AuthPage: React.FC<AuthPageProps> = ({onLoginSuccessful }) => {
 
     )
 }
-export default AuthPage;
+export default LoginAndRegistration;

@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { User } from "./AuthPage";
+import { User } from "./Menue";
+
+export interface Interval{
+    id: string;
+    startTime: string;
+    endTime: string;
+    seconds: number;
+    minutes: number;
+    hours: number;
+    
+}
 export interface Activity{
     id:string;
     name:string;
-    duration:number;
+    intervals: Interval [];
   
 }
 
@@ -12,22 +22,22 @@ interface Props {
     onSave: (updatedUser: User) => void;
 }
 
-const ActivityList: React.FC<Props> = ({user, onSave}) => {
+const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
     const [newActivity, setNewActivity] = useState<string>('');
     const [activities, setActivities] = useState<Activity[]>([]);
 
     useEffect(() => {
-        if(user.activities){
+        if(user &&user.activities){
             setActivities(user.activities);
         }
-       
-    },[user.activities]);
+    },[user]);
+    
     const handleAddActivity = () => {
         if (newActivity.trim() !== '') {
             const newActivityObj = {
                 id: String(Date.now()),
                 name: newActivity,
-                duration: 0
+                intervals: []
             };
             const updatedActivities = [
                 ...activities,
@@ -47,6 +57,7 @@ const ActivityList: React.FC<Props> = ({user, onSave}) => {
         setNewActivity(e.target.value);
     }
     const handleSaveActivities = () => {
+        if (user && user.id) {
         const updatedUser: User = {
             ...user,
             activities: activities
@@ -75,7 +86,11 @@ const ActivityList: React.FC<Props> = ({user, onSave}) => {
         .catch(error =>{
             console.error('Error saving activities', error.message);
         });
-    };
+    }else{
+        console.error('User or user id is null User:',user);
+
+    }
+}
 
     return(
         <div>
@@ -100,4 +115,4 @@ const ActivityList: React.FC<Props> = ({user, onSave}) => {
        
     );
 };
-export default ActivityList;
+export default CreateActivityList;
