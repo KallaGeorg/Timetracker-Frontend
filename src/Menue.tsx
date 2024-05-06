@@ -41,7 +41,7 @@ const Menue: React.FC<MenueProps> = ({user}) => {
     return(
         <>
         
-        <h1>Menue</h1>
+        {!selectedOption && <h1>Menue</h1>}
         {!selectedOption && (
             
         

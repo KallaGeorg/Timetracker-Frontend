@@ -7,8 +7,7 @@ export interface Interval{
     endTime: string;
     seconds: number;
     minutes: number;
-    hours: number;
-    
+    hours: number; 
 }
 export interface Activity{
     id:string;

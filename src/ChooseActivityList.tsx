@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { User } from "./Menue";
 import { Activity } from "./CreateActivityList";
+import ActivityTracking from "./ActivityTracking";
 
 
 interface ChooseActivityListProps {
-    user: User | null;
+    user: User;
 }
 const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
     const [activities, setActivities] = useState<Activity[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,10 +27,10 @@ const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
                         throw new Error('Invalid data received from the server');
                     }
                     setActivities(data);
-                    setLoading(false);
+                    
                 } catch (error) {
                     console.error('Error fetching activities', error);
-                    setLoading(false); 
+                   
                 }
             }
         };
@@ -38,38 +40,27 @@ const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
 
     }, [user]);
 
-    if (loading) {
-        return <div>Loading...</div>;
+    const handleActivitySelect = (activity: Activity) => {
+        setSelectedActivity(activity);
     }
 
     return (
         <div>
-        <h1>Choose Activity</h1>
+       
+        {!selectedActivity &&  <h3>Välj aktivitet du vill starta</h3>}
+        {!selectedActivity && (
         <ul>
             {activities.map((activity, index) => (
-                <li key={index}>
-                    <strong>ID:</strong> {activity.id}<br />
-                    <strong>Name:</strong> {activity.name}<br />
-                    <strong>Intervals:</strong> {activity.intervals.join(', ')}
-                    {activity.intervals.length === 0 ? (
-                            <p>No intervals</p>
-                        ) : (
-                            <ul>
-                                {activity.intervals.map((interval, intervalIndex) => (
-                                    <li key={intervalIndex}>
-                                        <strong>Interval ID:</strong> {interval.id}<br />
-                                        <strong>Start Time:</strong> {interval.startTime}<br />
-                                        <strong>End Time:</strong> {interval.endTime}<br />
-                                        <strong>Seconds:</strong> {interval.seconds}<br />
-                                        <strong>Minutes:</strong> {interval.minutes}<br />
-                                        <strong>Hours:</strong> {interval.hours}<br />
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                <li key={index} onClick={ () => handleActivitySelect(activity)}>
+                    {/* <strong>ID:</strong> {activity.id}<br /> */}
+                    <strong>Aktivitet:</strong> {activity.name}<br />
+                    <strong>Intervaller:</strong> {activity.intervals.length}<br />
                     </li>
-                ))}
+            ))}
             </ul>
+               
+            )}
+            {selectedActivity && <ActivityTracking user={user} activity={selectedActivity} />}
             </div>
     );
 };
