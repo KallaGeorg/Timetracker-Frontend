@@ -3,6 +3,7 @@ import ChooseActivityList from "./ChooseActivityList";
 import ActivityStatistics from "./ActivityStatistics";
 import React, { useState } from "react";
 
+
 export interface User {
     id?: string;
     firstname: string;
@@ -14,12 +15,13 @@ export interface User {
 }
 
 interface MenueProps {
-    user: User | null;
+    user: User ;
+    activity: Activity;
     onSave?: (updatedUser: User) => void;
+ 
 }
 const Menue: React.FC<MenueProps> = ({user}) => {
     console.log('Menue render');
-    // const[loginData, setLoginData] = useState<User | null>(null);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [, setUser] = useState<User | null>(null);
 
@@ -32,11 +34,9 @@ const Menue: React.FC<MenueProps> = ({user}) => {
 
     const handleBackToMenyClick = () => {
         setSelectedOption(null);
+       
     };
-    // const userWithActivities: User = props.user
-    //     ? { ...props.user, activities: props.user.activities || [] }
-    //     : { firstname: "", lastname: "", email: "", username: "", password: "", activities: [] };
-    //     console.log("User:", userWithActivities); 
+   
 
     return(
         <>
@@ -53,7 +53,7 @@ const Menue: React.FC<MenueProps> = ({user}) => {
         )}
         {selectedOption === 'createActivity' && <CreateActivityList user={user!} onSave={handleSaveUser} />}
         {selectedOption === 'chooseActivity' &&  user  && <ChooseActivityList user={user!}/>}
-        {selectedOption === 'activityStatistics' && <ActivityStatistics user={user!}/>}
+        {selectedOption === 'activityStatistics' &&  user &&  <ActivityStatistics user={user}/>}
         {selectedOption && (
              <button onClick={handleBackToMenyClick}>Tillbaka till menyn</button>
         )}

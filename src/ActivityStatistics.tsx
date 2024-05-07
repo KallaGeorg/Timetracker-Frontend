@@ -1,17 +1,83 @@
-import React from "react";
-import { User } from "./Menue";
+import React, { useEffect, useState } from "react";
+import { User } from "./Menue"; 
+
+
+
 
 interface ActivityStatisticsProps {
-    user: User | null
+    user: User;
+ 
+   
 }
-const ActivityStatistics: React.FC<ActivityStatisticsProps> = () => {
-// const[loginData, setLoginData] = useState<User | null>(null);
-  
-// const handleSaveUser =(updatedUser: User) => {
-//     setLoginData(updatedUser);
-// }
+const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
+   
+    const [activityStatistics, setActivityStatistics] = useState<{[key:string]: {name:string;hours:number; minutes:number; seconds:number}}>({});
+    
+    useEffect(() => {
+       
+        const fetchActivityStatistics = async () => {
+            console.log('Fetch activity statistics triggered');
+            
+            if (user && user.id) {
+                try {
+                    
+                    const res = await fetch(`http://localhost:8080/user/${user.id}/activities`);
+                    if (!res.ok) {
+                        throw new Error(`Failed to fetch activities: ${res.status} ${res.statusText}`);
+                    }
+                    const activities = await res.json();
+                    console.log('Fetched activities:', activities);
+                    const actStats: {[key:string]: {name:string;hours:number; minutes:number; seconds:number}} = {};
+                    for (const activity of activities) {
+                        const activityId = activity.id;
+                        const activityRes = await fetch(`http://localhost:8080/user/${user.id}/activities/${activityId}/intervals/sum`);
+                        console.log(`Fetch intervals for activity ${activityId} response status:`, activityRes.status);
+                        if (!activityRes.ok) {
+                            throw new Error(`Failed to fetch intervals for activity ${activityId}: ${activityRes.status} ${activityRes.statusText}`);
+                        } 
+                        const data = await activityRes.json();
+                        
+                        const activityData = {
+                            name: activity.name,
+                            hours: data.sumHours || 0,
+                            minutes: data.sumMinutes || 0,
+                            seconds: data.sumSeconds || 0
+                        };
+                        console.log(`Mapped data for activity ${activityId}:`, activityData);
+
+                        actStats[activityId] = activityData; 
+                    }
+                    setActivityStatistics(actStats);
+                } catch (error) {
+                    console.error('Error fetching activity statistics', error);
+                }             
+            } else {
+                
+            }
+           
+        }
+        fetchActivityStatistics();
+    }, [user]);
+      
     return(
-        <h1>Activity Statistics</h1>
-    )
-}
+             <div>
+                    <h3>Activity Statistics</h3>
+                        <ul>
+                        {Object.entries(activityStatistics).map((entry) => {
+                        const activityId = entry[0];
+                        const actStats = entry[1];
+                    return (
+                    <li key={activityId}>
+                    <strong>Aktivitet:</strong> {actStats.name || "no name"}<br/>
+                    <strong>Timmar:</strong> {actStats.hours || 0}<br/>
+                    <strong>Minuter:</strong> {actStats.minutes || 0}<br/>
+                     <strong>Sekunder:</strong> {actStats.seconds || 0}<br/>
+                    </li>
+                    );
+                })}
+            </ul>
+        </div>
+       
+    );
+};
 export default ActivityStatistics;
