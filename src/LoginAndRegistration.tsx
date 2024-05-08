@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RegistrationForm from "./Registration";
 import LoginForm from "./LoginForm";
 import Menue from "./Menue";
 import { User } from "./Menue";
+import { Admin } from "./Menue";
+import AdminPage from "./AdminPage";
 interface LoginAndRegistrationProps {
-    onLoginSuccess: (user: User) => void;
+    onLoginSuccess: (user: User | Admin) => void;
+    
     onLogout: () => void;
    
 }
@@ -13,31 +16,38 @@ const LoginAndRegistration: React.FC<LoginAndRegistrationProps> = ({ onLoginSucc
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const[loginData, setLoginData] = useState<User | null>(null);
     const [showRegistration, setShowRegistration] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    const handleLoginSuccess = (user: User) => {
+    const handleUserLoginSuccess = (user: User) => {
         setIsLoggedIn(true);
         setLoginData({...user, activities: []});
         onLoginSuccess(user);
+      
     };
- 
+    const handleAdminLoginSuccess = (admin:Admin) => {
+        setIsLoggedIn(true);
+        setLoginData(null);
+        setIsAdmin(true);
+        onLoginSuccess(admin);
+      
+    };
     
     const handleToggleRegistration = () => {
         setShowRegistration(!showRegistration);
     };
     
-    useEffect(() => {
-        console.log("LoginAndRegistration component re-rendered");
-    },[]);
+   
     
     return (
         <div>
             {!isLoggedIn && !showRegistration && (
-                 <LoginForm onLoginSuccess={handleLoginSuccess} />
+                 <LoginForm onUserLoginSuccess={handleUserLoginSuccess} onAdminLoginSuccess={handleAdminLoginSuccess} />
             )}
             {!isLoggedIn && showRegistration && (
-                <RegistrationForm onLoginSuccess={handleLoginSuccess} /> 
+                <RegistrationForm onLoginSuccess={handleUserLoginSuccess} /> 
             )}
-            {isLoggedIn && <Menue user={loginData!} />}
+            {isLoggedIn && !isAdmin && <Menue user={loginData!} />}
+            {isLoggedIn && isAdmin && <AdminPage /> }
             {!isLoggedIn && (
              <button onClick={handleToggleRegistration}>
                 {showRegistration ? "logga in" : "registrera"}

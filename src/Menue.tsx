@@ -14,9 +14,15 @@ export interface User {
     activities?: Activity[];
 }
 
+export interface Admin{
+    id?: string;
+    name: string;
+    password: string;
+    users:User[];
+}
+
 interface MenueProps {
     user: User ;
-    activity: Activity;
     onSave?: (updatedUser: User) => void;
  
 }

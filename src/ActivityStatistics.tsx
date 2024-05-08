@@ -36,6 +36,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                             throw new Error(`Failed to fetch intervals for activity ${activityId}: ${activityRes.status} ${activityRes.statusText}`);
                         } 
                         const data = await activityRes.json();
+                        console.log("fetched s u m", data);
                         
                         const activityData = {
                             name: activity.name,
@@ -60,23 +61,19 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
     }, [user]);
       
     return(
-             <div>
-                    <h3>Activity Statistics</h3>
-                        <ul>
-                        {Object.entries(activityStatistics).map((entry) => {
-                        const activityId = entry[0];
-                        const actStats = entry[1];
-                    return (
-                    <li key={activityId}>
-                    <strong>Aktivitet:</strong> {actStats.name || "no name"}<br/>
-                    <strong>Timmar:</strong> {actStats.hours || 0}<br/>
-                    <strong>Minuter:</strong> {actStats.minutes || 0}<br/>
-                     <strong>Sekunder:</strong> {actStats.seconds || 0}<br/>
-                    </li>
-                    );
-                })}
-            </ul>
-        </div>
+        <div>
+        <h3>Activity Statistics</h3>
+        <ul>
+            {Object.entries(activityStatistics).map(([activityId, actStats]) => (
+                <li key={activityId}>
+                    <strong>Activity:</strong> {actStats.name || "no name"}<br/>
+                    <strong>Hours:</strong> {actStats.hours || 0}<br/>
+                    <strong>Minutes:</strong> {actStats.minutes || 0}<br/>
+                    <strong>Seconds:</strong> {actStats.seconds || 0}<br/>
+                </li>
+            ))}
+        </ul>
+    </div>
        
     );
 };

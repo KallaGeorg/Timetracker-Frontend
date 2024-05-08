@@ -88,9 +88,8 @@ interface ActivityTrackingProps{
                 <div key={index}>
                     <p>Klockslag start: {interval.startTime}</p>
                     <p>Klockslag stopp: {interval.endTime}</p>
-                    <p>Sekunder: {interval.seconds}</p>
-                    <p>Minuter: {interval.minutes}</p>
-                    <p>Timmar: {interval.hours}</p>
+                    <p>Tid: {formatTime(interval.seconds * 1000)}</p>
+                   
                 </div>
                 
             ))}

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { User } from './Menue';
+import { Admin } from './Menue';
 
   interface LoginFormProps {
-    onLoginSuccess: (user:User) => void;
+    onUserLoginSuccess: (user:User) => void;
+    onAdminLoginSuccess: (admin: Admin) => void;
+   
   }
 
-const LoginForm: React.FC<LoginFormProps> = React.memo(({onLoginSuccess}) => {
+const LoginForm: React.FC<LoginFormProps> = React.memo(({ onUserLoginSuccess, onAdminLoginSuccess }) => {
     console.log('LoginForm render');
 
 const [username, setUsername] = useState('');
@@ -34,11 +37,23 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         
         if(res.ok){
              const user: User = await res.json();
-            onLoginSuccess(user);
+            onUserLoginSuccess(user);
            
         }else{
-            console.log('Login failed');
-            setLoginError('Felaktigt lösenord eller användernamn');
+            const adminRes = await fetch('http://localhost:8080/admin/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+        if(adminRes.ok){
+            const admin:Admin = await adminRes.json();
+            onAdminLoginSuccess(admin);
+        }else{
+            console.log('admin login failed');
+            setLoginError('Felaktigt lösenord eller användarnamn');
+        }
         }
    }catch(error){
     console.error('Error logging in', error);
