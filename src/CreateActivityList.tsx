@@ -24,6 +24,9 @@ interface Props {
 const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
     const [newActivity, setNewActivity] = useState<string>('');
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [editedActivityId, setEditedActivityId] = useState<string>('');
+    const [editedActivityName, setEditedActivityName] = useState<string>('');
+    const [listSaved, setListSaved] = useState<boolean>(false);
 
     useEffect(() => {
         if(user &&user.activities){
@@ -55,6 +58,26 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewActivity(e.target.value);
     }
+    const handleEditActivity = (activity: Activity) => {
+        setEditedActivityId(activity.id);
+        setEditedActivityName(activity.name);
+      };
+
+      const handleSaveEditedActivity = () => {
+        const updatedActivities = activities.map((activity) => {
+          if (activity.id === editedActivityId) {
+            return {
+              ...activity,
+              name: editedActivityName
+            };
+          }
+          return activity;
+        });
+        setActivities(updatedActivities);
+        setEditedActivityId('');
+        setEditedActivityName('');
+      };
+
     const handleSaveActivities = () => {
         if (user && user.id) {
         const updatedUser: User = {
@@ -73,6 +96,11 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
                 throw new Error('Failed to save activities');
             }
             console.log('Activities saved successfully');
+            setListSaved(true);
+            setTimeout(()=>{
+                setListSaved(false);
+                setActivities([]);
+            },2000);
             return res.json();
         })
         .then(updatedUserData =>{
@@ -89,7 +117,7 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
         console.error('User or user id is null User:',user);
 
     }
-}
+};
 
     return(
         <div>
@@ -101,15 +129,36 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
                 placeholder="skriv aktivitet"
                 />
                 <button onClick={handleAddActivity}>lägg till</button>
+                {!listSaved && (
+                    <>
+                    
                 <ul>
                     {activities.map((activity) => (
                         <li key={activity.id}>
-                            {activity.name}
-                            <button onClick={() => handleDeleteActivity(activity.id)}>radera</button>
-                        </li>
-                    ))}
-                </ul>
-                <button onClick={handleSaveActivities}>Spara</button>
+                               {activity.id === editedActivityId ? (
+              <>
+                <input
+                  type="text"
+                  value={editedActivityName}
+                  onChange={(e) => setEditedActivityName(e.target.value)}
+                />
+                <button onClick={handleSaveEditedActivity}>spara</button>
+              </>
+            ) : (
+              <>
+                {activity.name}
+                <button onClick={() => handleEditActivity(activity)}>redigera</button>
+                <button onClick={() => handleDeleteActivity(activity.id)}>radera</button>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <button onClick={handleSaveActivities}>Spara Listan</button>
+      </>
+      )}        
+                {listSaved && <p>Listan sparad!</p>}
+              
         </div>
        
     );

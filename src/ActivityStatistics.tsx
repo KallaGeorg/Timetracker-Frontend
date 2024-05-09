@@ -4,6 +4,7 @@ import { User } from "./Menue";
 
 
 
+
 interface ActivityStatisticsProps {
     user: User;
  
@@ -12,7 +13,7 @@ interface ActivityStatisticsProps {
 const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
    
     const [activityStatistics, setActivityStatistics] = useState<{[key:string]: {name:string;hours:number; minutes:number; seconds:number}}>({});
-    
+    const [updateIndicator, setUpdateIndicator] = useState(false);
     useEffect(() => {
        
         const fetchActivityStatistics = async () => {
@@ -58,19 +59,42 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
            
         }
         fetchActivityStatistics();
-    }, [user]);
+    }, [user, updateIndicator]);
+    const handleDelete = async (activityId:string) =>{
+        try{
+            const res = await fetch(`http://localhost:8080/user/${user.id}/activities/${activityId}`,{
+                method: 'DELETE',
+            });
+            if(!res.ok){
+                throw new Error("Failed to delete activity with id:${activityId}")
+                }
+                setActivityStatistics((prevStats) => {
+                    const updatedStats = { ...prevStats };
+                    delete updatedStats[activityId];
+                    return updatedStats;
+                  });
+                  setUpdateIndicator((prev) => !prev);
+            }catch (error){
+                console.error('Error deleting activity', error);
+            }
+    };
       
     return(
         <div>
         <h3>Activity Statistics</h3>
         <ul>
+            
             {Object.entries(activityStatistics).map(([activityId, actStats]) => (
                 <li key={activityId}>
+                    <div>
                     <strong>Activity:</strong> {actStats.name || "no name"}<br/>
                     <strong>Hours:</strong> {actStats.hours || 0}<br/>
                     <strong>Minutes:</strong> {actStats.minutes || 0}<br/>
                     <strong>Seconds:</strong> {actStats.seconds || 0}<br/>
+                    </div>
+                    <button onClick={() => handleDelete(activityId)}>Ta bort</button>
                 </li>
+
             ))}
         </ul>
     </div>
