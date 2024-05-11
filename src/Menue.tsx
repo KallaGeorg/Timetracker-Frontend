@@ -2,6 +2,7 @@ import CreateActivityList,{ Activity }  from "./CreateActivityList";
 import ChooseActivityList from "./ChooseActivityList";
 import ActivityStatistics from "./ActivityStatistics";
 import React, { useState } from "react";
+import DeleteAccountForm from "./DeleteAccountForm";
 
 
 export interface User {
@@ -24,9 +25,11 @@ export interface Admin{
 interface MenueProps {
     user: User ;
     onSave?: (updatedUser: User) => void;
+    isLoggedIn: boolean;
+    onDeleteSuccess: () => void;
  
 }
-const Menue: React.FC<MenueProps> = ({user}) => {
+const Menue: React.FC<MenueProps> = ({user, onDeleteSuccess}) => {
     console.log('Menue render');
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [, setUser] = useState<User | null>(null);
@@ -42,7 +45,10 @@ const Menue: React.FC<MenueProps> = ({user}) => {
         setSelectedOption(null);
        
     };
-   
+    
+   const handleDeleteAccountSuccess = () => {
+       onDeleteSuccess();
+   }
 
     return(
         <>
@@ -55,11 +61,14 @@ const Menue: React.FC<MenueProps> = ({user}) => {
             <button onClick={() => handleMenuOptionClick("createActivity")}>Lägg till aktivitet</button>
             <button onClick={() => handleMenuOptionClick("chooseActivity")}>Timetracking</button>
             <button onClick={() => handleMenuOptionClick("activityStatistics")}>Titta på statistik</button>
+            <button onClick={() => handleMenuOptionClick("deleteAccount")}>Ta bort konto</button>
+
         </div>
         )}
         {selectedOption === 'createActivity' && <CreateActivityList user={user!} onSave={handleSaveUser} />}
         {selectedOption === 'chooseActivity' &&  user  && <ChooseActivityList user={user!}/>}
         {selectedOption === 'activityStatistics' &&  user &&  <ActivityStatistics user={user}/>}
+        {selectedOption === 'deleteAccount' && user && <DeleteAccountForm userId={user.id!} onDeleteSuccess={handleDeleteAccountSuccess}/>}
         {selectedOption && (
              <button onClick={handleBackToMenyClick}>Tillbaka till menyn</button>
         )}

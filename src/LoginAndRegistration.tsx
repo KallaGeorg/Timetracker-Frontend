@@ -35,6 +35,9 @@ const LoginAndRegistration: React.FC<LoginAndRegistrationProps> = ({ onLoginSucc
     const handleToggleRegistration = () => {
         setShowRegistration(!showRegistration);
     };
+    const handleDeleteAccountSuccess = () => {
+        setIsLoggedIn(false);
+    };
     
    
     
@@ -46,7 +49,7 @@ const LoginAndRegistration: React.FC<LoginAndRegistrationProps> = ({ onLoginSucc
             {!isLoggedIn && showRegistration && (
                 <RegistrationForm onLoginSuccess={handleUserLoginSuccess} /> 
             )}
-            {isLoggedIn && !isAdmin && <Menue user={loginData!} />}
+            {isLoggedIn && !isAdmin && <Menue user={loginData!} onDeleteSuccess={handleDeleteAccountSuccess} isLoggedIn={isLoggedIn}/>}
             {isLoggedIn && isAdmin && <AdminPage /> }
             {!isLoggedIn && (
              <button onClick={handleToggleRegistration}>

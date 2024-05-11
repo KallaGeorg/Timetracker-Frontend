@@ -41,15 +41,24 @@ const handleStop = async () => {
         const seconds = Math.floor((elapsedMilliseconds / 1000) % 60);
         const minutes = Math.floor((elapsedMilliseconds / (1000 * 60)) % 60);
         const hours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
+        console.log("endTime before setting:", new Date(currentTime).toLocaleString());
 
-        const intervalData = {
-            startTime: new Date(startTime).toISOString(),
-            endTime: new Date(currentTime).toISOString(),
-            seconds: seconds, 
-            minutes: minutes,
-            hours: hours, 
+        const formatOptions: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
         };
-        
+        const intervalData = {
+            startTime: new Date(startTime).toLocaleString('sv-SE', formatOptions),
+            endTime: new Date(currentTime).toLocaleString('sv-SE', formatOptions),
+            seconds: seconds,
+            minutes: minutes,
+            hours: hours,
+        };
         try {
             const res = await fetch(`http://localhost:8080/user/${user.id}/activities/${activity.id}/intervals`, {
                 method: "PATCH",
@@ -62,8 +71,9 @@ const handleStop = async () => {
                 throw new Error("Failed to save interval data");
             }
             const intervalWithId: Interval = await res.json();
-            console.log('Interval saved successfully:', intervalWithId);
-            setIntervals(prevIntervals => [...prevIntervals, intervalWithId]);
+            const updatedInterval = { ...intervalWithId, endTime: intervalData.endTime, startTime: intervalData.startTime };
+            console.log('Interval saved successfully:', intervalWithId, updatedInterval);
+            setIntervals(prevIntervals => [...prevIntervals,updatedInterval]);
         }catch(error){
             console.error('Error saving interval data', error);
         }
@@ -90,8 +100,8 @@ return (
 
         {intervals.map((interval, index) => (
     <div key={index}>
-        <p>Klockslag start: {interval.startTime}</p>
-        <p>Klockslag stopp: {interval.endTime}</p>
+        <p>Klockslag start: {new Date(interval.startTime).toLocaleString()}</p>
+        <p>Klockslag stopp: {new Date(interval.endTime).toLocaleString()}</p>
         <p>Tid: {formatTime(interval.seconds * 1000 + interval.minutes * 60 * 1000 + interval.hours * 3600 * 1000)}</p>
     </div>
 ))}

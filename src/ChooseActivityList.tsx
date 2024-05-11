@@ -46,19 +46,7 @@ const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
         setSelectedActivity(activity);
     }
 
-    // const handleDelete = async (actvityId:string) =>{
-    //     try{
-    //         const res = await fetch(`http://localhost:8080/user/${user.id}/activities/${actvityId}`,{
-    //             method: 'DELETE',
-    //         });
-    //         if(!res.ok){
-    //             throw new Error("Failed to delete activity with id:"+actvityId)
-    //             }
-    //         setActivities(prevActivities => prevActivities.filter(activity => activity.id !== actvityId));
-    //         }catch (error){
-    //             console.error('Error deleting activity', error);
-    //         }
-    // };
+
 
     return (
         <div>
@@ -72,6 +60,8 @@ const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
                     <div onClick={ () => handleActivitySelect(activity)}>
                     <strong>Aktivitet:</strong> {activity.name}<br />
                     <strong>Intervaller:</strong> {activity.intervals.length}<br />
+                    
+
                     </div>
 
                     {/* <button onClick={() => handleDelete(activity.id)}>Ta bort</button> */}
