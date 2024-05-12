@@ -6,7 +6,7 @@ interface RegistrationFormProps{
     onLoginSuccess:(user: User) => void;
 }
 const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => {
-    console.log('RegistrationForm render');
+    console.log('RegistrationForm render!');
     const [formData, setFormData] = useState<User>({
         
         firstname:'',
