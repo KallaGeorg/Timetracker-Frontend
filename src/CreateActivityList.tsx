@@ -84,7 +84,7 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
             ...user,
             activities: activities
         };
-        fetch(`http://localhost:8080/user/${user.id}`, {
+        fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

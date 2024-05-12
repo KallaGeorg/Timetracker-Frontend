@@ -60,7 +60,7 @@ const handleStop = async () => {
             hours: hours,
         };
         try {
-            const res = await fetch(`http://localhost:8080/user/${user.id}/activities/${activity.id}/intervals`, {
+            const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities/${activity.id}/intervals`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

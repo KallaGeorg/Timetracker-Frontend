@@ -27,7 +27,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
-        const res = await fetch('http://localhost:8080/user/login', {
+        const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
             onUserLoginSuccess(user);
            
         }else{
-            const adminRes = await fetch('http://localhost:8080/admin/login', {
+            const adminRes = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/admin/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

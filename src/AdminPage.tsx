@@ -8,7 +8,7 @@ const AdminPage: React.FC = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await fetch("http://localhost:8080/users");
+                const res = await fetch("https://stingray-app-2hrxo.ondigitalocean.app/users");
                 if (res.ok) {
                     const data = await res.json();
                     

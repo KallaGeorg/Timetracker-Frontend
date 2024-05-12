@@ -10,9 +10,9 @@ const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({userId, onDeleteSu
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (_e:React.FormEvent<HTMLFormElement>) => {
        try {
-        const res = await fetch(`http://localhost:8080/user/${userId}`, {
+        const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${userId}`, {
             method:"DELETE",
             headers:{
                 'Content-Type': 'application/json'

@@ -25,7 +25,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
             if (user && user.id) {
                 try {
 
-                    const res = await fetch(`http://localhost:8080/user/${user.id}/activities`);
+                    const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities`);
                     if (!res.ok) {
                         throw new Error(`Failed to fetch activities: ${res.status} ${res.statusText}`);
                     }
@@ -45,7 +45,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                                 seconds: interval.seconds || 0
                             };
                         });
-                        const activityRes = await fetch(`http://localhost:8080/user/${user.id}/activities/${activityId}/intervals/sum`);
+                        const activityRes = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities/${activityId}/intervals/sum`);
                         console.log(`Fetch intervals for activity ${activityId} response status:`, activityRes.status);
                         if (!activityRes.ok) {
                             throw new Error(`Failed to fetch intervals for activity ${activityId}: ${activityRes.status} ${activityRes.statusText}`);
@@ -80,7 +80,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
     }, [user, updateIndicator]);
     const handleDelete = async (activityId:string) =>{
         try{
-            const res = await fetch(`http://localhost:8080/user/${user.id}/activities/${activityId}`,{
+            const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities/${activityId}`,{
                 method: 'DELETE',
             });
             if(!res.ok){
