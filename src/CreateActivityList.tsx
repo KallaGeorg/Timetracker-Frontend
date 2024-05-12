@@ -121,43 +121,45 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
 
     return(
         <div>
-             <h3>Lägg till aktiviteter</h3>
+             <h3 className="chooseHeader">Lägg till aktiviteter</h3>
              <input 
                 type="text"
                 value={newActivity}
                 onChange={handleInputChange} 
                 placeholder="skriv aktivitet"
+                className="addInput"
                 />
-                <button onClick={handleAddActivity}>lägg till</button>
+                <button className="läggTillBtn" onClick={handleAddActivity}>lägg till</button>
                 {!listSaved && (
                     <>
                     
                 <ul>
                     {activities.map((activity) => (
-                        <li key={activity.id}>
+                        <li className="createActItem" key={activity.id}>
                                {activity.id === editedActivityId ? (
               <>
                 <input
                   type="text"
                   value={editedActivityName}
                   onChange={(e) => setEditedActivityName(e.target.value)}
+                  className="editInput"
                 />
-                <button onClick={handleSaveEditedActivity}>spara</button>
+                <button className="editSaveBtn" onClick={handleSaveEditedActivity}>spara</button>
               </>
             ) : (
               <>
                 {activity.name}
-                <button onClick={() => handleEditActivity(activity)}>redigera</button>
-                <button onClick={() => handleDeleteActivity(activity.id)}>radera</button>
+                <button className="createActBtn" onClick={() => handleEditActivity(activity)}>redigera</button>
+                <button className="createActBtn" onClick={() => handleDeleteActivity(activity.id)}>radera</button>
               </>
             )}
           </li>
         ))}
       </ul>
-      <button onClick={handleSaveActivities}>Spara Listan</button>
+      <button className="sparaListanBtn" onClick={handleSaveActivities}>Spara Listan</button>
       </>
       )}        
-                {listSaved && <p>Listan sparad!</p>}
+                {listSaved && <p className="messageListSaved">Listan sparad!</p>}
               
         </div>
        

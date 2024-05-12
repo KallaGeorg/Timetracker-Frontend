@@ -92,16 +92,16 @@ const formatTime = (ms: number): string => {
 return (
     <div>
 
-        <h3>Tracking Activity</h3>
-        <p>Tar tid av: {activity.name}</p>
-        {!isRunning && <button onClick={handleStart}>Start</button>}
-        {isRunning && <button onClick={handleStop}>Stopp</button>}
+        <h3 className="trackingActivityHeader">Tidsmätning</h3>
+        <p className="timeOfActivityItem">Tar tid av: {activity.name}</p>
+        {!isRunning && <button className="startOchStoppBtn"  onClick={handleStart}>Start</button>}
+        {isRunning && <button className="startOchStoppBtn" onClick={handleStop}>Stopp</button>}
         <p className="timer">{isRunning ? formatTime(elapsedTime): "00:00:00"}</p>
 
         {intervals.map((interval, index) => (
     <div key={index}>
-        <p>Klockslag start: {new Date(interval.startTime).toLocaleString()}</p>
-        <p>Klockslag stopp: {new Date(interval.endTime).toLocaleString()}</p>
+        <p className="startOchSlutTime"> Start Tid: {new Date(interval.startTime).toLocaleString()}</p>
+        <p className="startOchSlutTime"> Slut Tid: {new Date(interval.endTime).toLocaleString()}</p>
         <p>Tid: {formatTime(interval.seconds * 1000 + interval.minutes * 60 * 1000 + interval.hours * 3600 * 1000)}</p>
     </div>
 ))}

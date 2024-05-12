@@ -64,17 +64,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
                 onLoginSuccess(user);
                 setRegistrationStatus('success');
                 resetForm();
-                
-                
-                   
-                
             
-                console.log('Registration status:', registrationStatus);
-               
-              
-            }else{
-                console.error('Error posting user');
-                setRegistrationStatus('error');
+            } else {
+                const errorMessage = await res.text();
+                if (errorMessage === 'Username already exists') {
+                     setUsernameError('Användarnamn upptaget');
+                } else {
+                    console.error('Error posting user');
+                    setRegistrationStatus('error');
+                }
             }
            }catch(error){
                 console.error('There was an error while registrating', error);
@@ -106,6 +104,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
                     placeholder="förnamn"
                     value={formData.firstname}
                     onChange={handleChange}
+                    className="registerField"
                     required
                 />
                 <input
@@ -114,6 +113,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
                     placeholder="eftenamn"
                     value={formData.lastname}
                     onChange={handleChange}
+                    className="registerField"
                     required
                 />
                 <input
@@ -122,31 +122,37 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
+                    className="registerField"
                     required
                 />
               
                 <input
                     type="text"
                     name="username"
-                    placeholder="användarnamn"
+                    placeholder="användarnamn 6 tecken"
                     value={formData.username}
                     onChange={handleChange}
+                    className="registerField"
                     required
                     />
-                      {usernameError && <p>{usernameError}</p>}
+                   
                        <input
                     type="text"
                     name="password"
-                    placeholder="lösenord"
+                    placeholder="lösenord 8 tecken"
                     value={formData.password}
                     onChange={handleChange}
+                    className="registerField"
                     required
                     />
+                    
+                   
+                    <button className="registerButton" type="submit">Registrera</button>
+                    {usernameError && <p>{usernameError}</p>}
                     {passwordError && <p>{passwordError}</p>}
-                    <button type="submit">Registrera</button>
                     {registrationStatus === 'error' && <p>Registrering misslyckades!</p>}
             </form>
-             
+                    
               </>
         );
     };

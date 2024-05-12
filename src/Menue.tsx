@@ -51,17 +51,17 @@ const Menue: React.FC<MenueProps> = ({user, onDeleteSuccess}) => {
    }
 
     return(
-        <>
+        <div className="menueButtonContainer">
         
-        {!selectedOption && <h1>Menue</h1>}
+        {!selectedOption && <h1 className="menueHeader">Meny</h1>}
         {!selectedOption && (
             
         
-        <div className="menueButtonContainer">
-            <button onClick={() => handleMenuOptionClick("createActivity")}>Lägg till aktivitet</button>
-            <button onClick={() => handleMenuOptionClick("chooseActivity")}>Timetracking</button>
-            <button onClick={() => handleMenuOptionClick("activityStatistics")}>Titta på statistik</button>
-            <button onClick={() => handleMenuOptionClick("deleteAccount")}>Ta bort konto</button>
+        <div >
+            <button className="menueButton" onClick={() => handleMenuOptionClick("createActivity")}>Lägg till aktivitet</button>
+            <button className="menueButton" onClick={() => handleMenuOptionClick("chooseActivity")}>Timetracking</button>
+            <button className="menueButton" onClick={() => handleMenuOptionClick("activityStatistics")}>Titta på statistik</button>
+            <button className="menueButton" onClick={() => handleMenuOptionClick("deleteAccount")}>Ta bort konto</button>
 
         </div>
         )}
@@ -70,9 +70,9 @@ const Menue: React.FC<MenueProps> = ({user, onDeleteSuccess}) => {
         {selectedOption === 'activityStatistics' &&  user &&  <ActivityStatistics user={user}/>}
         {selectedOption === 'deleteAccount' && user && <DeleteAccountForm userId={user.id!} onDeleteSuccess={handleDeleteAccountSuccess}/>}
         {selectedOption && (
-             <button onClick={handleBackToMenyClick}>Tillbaka till menyn</button>
+             <button className="backToMenyBtn" onClick={handleBackToMenyClick}>Tillbaka till menyn</button>
         )}
-        </>
+        </div>
 
     );
     

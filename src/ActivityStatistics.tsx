@@ -8,6 +8,7 @@ import { Interval } from "./CreateActivityList"
 
 interface ActivityStatisticsProps {
     user: User;
+    
  
    
 }
@@ -38,6 +39,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                             return{
                                 id: interval.id,
                                 startTime: interval.startTime,
+                                endTime: interval.endTime,
                                 hours: interval.hours || 0,
                                 minutes: interval.minutes || 0,
                                 seconds: interval.seconds || 0
@@ -97,11 +99,11 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
       
     return(
         <div>
-        <h3>Activity Statistics</h3>
+        <h3 className="statisticsHeader">Statistik av alla activiteter</h3>
         <ul>
             
             {Object.entries(activityStatistics).map(([activityId, actStats]) => (
-                <li key={activityId}>
+                <li className="activitSatisticsList" key={activityId}>
                     <div>
                     <strong>Aktivitet:</strong> {actStats.name || "no name"}<br/>
                     <strong>total timmar:</strong> {actStats.totalHours || 0}<br/>
@@ -112,11 +114,11 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                         {Object.entries(actStats.intervals).map(([intervalKey, interval], idx)=>(
                             <ol key={intervalKey}>
                                 <strong>{idx +1 } Interval:</strong> {interval.hours} hours, {interval.minutes} minutes, {interval.seconds} seconds
-                                <span> Datum: {new Date(interval.startTime).toLocaleString()}</span>
+                                <span>// Start tid: {new Date(interval.startTime).toLocaleString()} // Slut tid: {new Date(interval.endTime).toLocaleString()}</span>
                             </ol>
                         ))}
                     </ul>
-                    <button onClick={() => handleDelete(activityId)}>Ta bort</button>
+                    <button className="deleteActBtn" onClick={() => handleDelete(activityId)}>Ta bort</button>
                 </li>
 
             ))}

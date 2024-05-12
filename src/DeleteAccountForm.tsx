@@ -34,27 +34,29 @@ const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({userId, onDeleteSu
 
     return (
         <div>
-        <h3>Skriv användarnamn och lösenord för att ta bort ditt konto</h3><br />
+        <h3 className='deleteAccountTitle'>Skriv användarnamn och lösenord för att ta bort ditt konto</h3><br />
         <form onSubmit={handleSubmit}>
-          <label>
+          <label className='deleteAccountLabel'>
             Användarnamn:
             <input 
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className='deleteAccountField'
             required
             />
         </label>
-        <label >
+        <label className='deleteAccountLabel'>
             Lösenord:
             <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className='deleteAccountField'
             required
             />
         </label>
-        <button type='submit'>Ta bort konto</button>
+        <button className='deleteAccountBtn' type='submit'>Ta bort konto</button>
         {error && <p>{error}</p>}
         </form>
 

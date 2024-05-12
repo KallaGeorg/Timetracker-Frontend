@@ -19,17 +19,14 @@ const Frontpage = () => {
 
 
     return (
-        <>
-        <h1>Timetracker</h1>
-        {!isLoggedIn ? (
-            <button onClick={handleLoginClick}>Login</button>
-        ):(
-            <button onClick={handleLogoutClick}>Logout</button>
-        )}
-        {showAuthPage && <LoginAndRegistration onLoginSuccess={handleLoginSuccess} onLogout={() => setIsLoggedIn(false)}/>}
-     
-        </>
-        
+        <div>
+        <h1 className="timetrackerHeader">Timetracker</h1>
+        <button className="loginLogoutButton" onClick={!isLoggedIn ? handleLoginClick : handleLogoutClick}>
+            {!isLoggedIn ? "Login" : "Logout"}
+        </button>
+        {showAuthPage && <LoginAndRegistration onLoginSuccess={handleLoginSuccess} onLogout={() => setIsLoggedIn(false)} />}
+    </div>
+    
     );
 };
 export default Frontpage;

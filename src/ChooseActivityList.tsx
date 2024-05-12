@@ -49,25 +49,26 @@ const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
 
 
     return (
-        <div>
+        <div className="choose">
        
-        {!selectedActivity &&  <h3>Välj aktivitet du vill starta</h3>}
+        {!selectedActivity &&  <h3 className="chooseHeader">Välj aktivitet du vill starta</h3>}
         {!selectedActivity && (
-        <ul>
+        <ol type="1">
             {activities.map((activity, index) => (
                 <li key={index} >
 
-                    <div onClick={ () => handleActivitySelect(activity)}>
+                    <div className="chooseList">
                     <strong>Aktivitet:</strong> {activity.name}<br />
                     <strong>Intervaller:</strong> {activity.intervals.length}<br />
+                    <button className="startaTimetrackingBtn" onClick={ () => handleActivitySelect(activity)}>starta timetracking</button>
                     
 
                     </div>
 
-                    {/* <button onClick={() => handleDelete(activity.id)}>Ta bort</button> */}
+                
                     </li>
             ))}
-            </ul>
+            </ol>
                
             )}
             {selectedActivity && <ActivityTracking user={user} activity={selectedActivity} />}

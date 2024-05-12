@@ -66,32 +66,39 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
     return (
         
     
-       <div>
+       <div >
         <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="username">Användarnamn:</label>
+            <div className='loginForm'>
+               
                 <input
                  type="text"
                  id='username'
                  name='username'
+                 placeholder='Användarnamn'
                  value={username}
                  onChange={handleChange}
                  required
+                 className='loginFormField'
                   />
             </div>
-            <div>
-                <label htmlFor="password">Lösenord:</label>
+            <div className='loginForm'>
+              
                 <input
                  type="password"
                  id='password'
                  name='password'
+                 placeholder='Lösenord'
                  value={password}
                  onChange={handleChange}
                  required
+                 className='loginFormField'
                   />
             </div>
+            <div className='loggaInBtnDiv'>
             {loginError && <p style={{color: 'red'}}>{loginError}</p>}
-            <button type='submit'>logga in</button>
+            <button className='loggaInBtn' type='submit'>logga in</button>
+            </div>
+          
             </form>
        </div>  
     );
