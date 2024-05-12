@@ -69,7 +69,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                     }
                     setActivityStatistics(actStats);
                 } catch (error) {
-                    console.error('Error fetching activity statistics', error);
+                    console.error('Error fetching activity statistics!', error);
                 }
             } else {
 
