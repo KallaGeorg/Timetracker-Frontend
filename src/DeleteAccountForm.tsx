@@ -15,6 +15,7 @@ const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({userId, onDeleteSu
        try {
         const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${userId}`, {
             method:"DELETE",
+            mode: 'no-cors',
             headers:{
                 'Content-Type': 'application/json'
             },

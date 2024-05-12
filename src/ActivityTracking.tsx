@@ -62,6 +62,8 @@ const handleStop = async () => {
         try {
             const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities/${activity.id}/intervals`, {
                 method: "PATCH",
+                mode: 'no-cors',
+                
                 headers: {
                     "Content-Type": "application/json",
                 },

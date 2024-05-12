@@ -86,6 +86,7 @@ const CreateActivityList: React.FC<Props> = ({user, onSave}) => {
         };
         fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}`, {
             method: 'PATCH',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },

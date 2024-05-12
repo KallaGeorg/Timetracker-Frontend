@@ -26,6 +26,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                 try {
 
                     const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities`);
+                    mode: 'no-cors';
                     if (!res.ok) {
                         throw new Error(`Failed to fetch activities: ${res.status} ${res.statusText}`);
                     }
@@ -46,6 +47,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
                             };
                         });
                         const activityRes = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities/${activityId}/intervals/sum`);
+                        mode: 'no-cors';
                         console.log(`Fetch intervals for activity ${activityId} response status:`, activityRes.status);
                         if (!activityRes.ok) {
                             throw new Error(`Failed to fetch intervals for activity ${activityId}: ${activityRes.status} ${activityRes.statusText}`);
