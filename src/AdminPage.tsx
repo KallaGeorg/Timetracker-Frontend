@@ -9,7 +9,7 @@ const AdminPage: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 const res = await fetch("https://stingray-app-2hrxo.ondigitalocean.app/users");
-                mode: 'no-cors';
+                // mode: 'no-cors';
                 if (res.ok) {
                     const data = await res.json();
                     

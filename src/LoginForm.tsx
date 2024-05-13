@@ -29,7 +29,7 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
     try{
         const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/login', {
             method: 'POST',
-            mode: 'no-cors',
+            // mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -43,7 +43,7 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
         }else{
             const adminRes = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/admin/login', {
           method: 'POST',
-          mode: 'no-cors',
+        //   mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json'
           },
