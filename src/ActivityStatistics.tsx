@@ -84,6 +84,7 @@ const ActivityStatistics: React.FC<ActivityStatisticsProps> = ({user}) => {
         try{
             const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities/${activityId}`,{
                 method: 'DELETE',
+                mode: 'no-cors',
             });
             if(!res.ok){
                 throw new Error("Failed to delete activity with id:${activityId}")
