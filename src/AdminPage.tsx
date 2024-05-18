@@ -44,18 +44,19 @@ const AdminPage: React.FC = () => {
                             <h4>Efternamn: {user.lastname}</h4>
                             <h4>E-postadress: {user.email}</h4>
                             <h3 className="clientTitle">Aktiviteter:</h3>
-                            <ol  style={{ listStyleType: "none" }}>
-                                {user.activities &&
-                                    user.activities.map((activity: Activity) => (
-                                        <li className="aktivitetList" key={activity.id}>
-                                            <h4>Aktivitet: {activity.name}</h4>
-                                            <h4>Intervaller: {activity.intervals.length}</h4>
-                                            <h4>
-                                             Tid: {calculateTotalTime(activity.intervals)}
-                                            </h4>
-                                        </li>
-                                    ))}
-                            </ol>
+                            <ol style={{ listStyleType: "none" }}>
+            {user.activities && user.activities.length > 0 ? (
+                user.activities.map((activity: Activity) => (
+                    <li className="aktivitetList" key={activity.id}>
+                        <h4>Aktivitet: {activity.name}</h4>
+                        <h4>Intervaller: {activity.intervals.length}</h4>
+                        <h4>Tid: {calculateTotalTime(activity.intervals)}</h4>
+                    </li>
+                ))
+            ) : (
+                <li>No activities found</li>
+            )}
+        </ol>
                             <h4>Total tid för alla aktiviteter: {calculateTotalTimeForUser(user)}</h4>
                         </li>
                     ))}
