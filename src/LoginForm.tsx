@@ -9,7 +9,7 @@ import { Admin } from './Menue';
   }
 
 const LoginForm: React.FC<LoginFormProps> = React.memo(({ onUserLoginSuccess, onAdminLoginSuccess }) => {
-    console.log('LoginForm render');
+    console.log('LoginForm render testing');
 
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
