@@ -32,9 +32,9 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
            
             
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify({username, password})  
+            body: new URLSearchParams({ username, password }).toString()  
         });
         
         if(res.ok){
@@ -43,13 +43,11 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
            
         }else{
             const adminRes = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/admin/login', {
-          method: 'POST',
-          
-         
-          headers: {
-            'Content-Type': 'application/json'
+             method: 'POST',
+             headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify({ username, password })
+          body: new URLSearchParams({ username, password }).toString()
         });
         if(adminRes.ok){
             const admin:Admin = await adminRes.json();
