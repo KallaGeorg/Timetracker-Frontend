@@ -24,50 +24,43 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(value);
     }
 }
-const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoginError(null); // Reset login error
+
     try {
-        const isAdmin = username === 'Admin' && password === 'Admin';
+      const isAdmin = username === 'Admin' && password === 'Admin';
+      const loginUrl = isAdmin 
+        ? 'https://stingray-app-2hrxo.ondigitalocean.app/admin/login' 
+        : 'https://stingray-app-2hrxo.ondigitalocean.app/user/login';
+      const res = await fetch(loginUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+
         if (isAdmin) {
-          const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/admin/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: username, password: password }),
-          });
-  
-          if (res.ok) {
-            const admin: Admin = await res.json();
-            onAdminLoginSuccess(admin);
-          } else {
-            const errorText = await res.text();
-            console.log('Admin login failed', errorText);
-            setLoginError('Felaktigt lösenord eller användarnamn');
-          }
+          const admin: Admin = data;
+          onAdminLoginSuccess(admin);
         } else {
-          const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/user/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-          });
-  
-          if (res.ok) {
-            const user: User = await res.json();
-            onUserLoginSuccess(user);
-          } else {
-            const errorText = await res.text();
-            console.log('User login failed', errorText);
-            setLoginError('Felaktigt lösenord eller användarnamn');
-          }
+          const user: User = data;
+          onUserLoginSuccess(user);
         }
-      } catch (error) {
-        console.error('Error logging in', error);
-        setLoginError('An error occurred on login. Please try again later');
+      } else {
+        const errorText = await res.text();
+        console.log(`${isAdmin ? 'Admin' : 'User'} login failed`, errorText);
+        setLoginError('Felaktigt lösenord eller användarnamn');
       }
-    };
+    } catch (error) {
+      console.error('Error logging in', error);
+      setLoginError('An error occurred on login. Please try again later');
+    }
+  };
   
 
 
