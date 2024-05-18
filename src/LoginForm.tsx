@@ -47,7 +47,7 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
              headers: {
                 'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({name: username, password })
         });
         if(adminRes.ok){
             const admin:Admin = await adminRes.json();
