@@ -77,7 +77,7 @@ const calculateTotalTime = (intervals: Interval[]): string => {
 const calculateTotalTimeForUser = (user: User): string => {
     let totalSeconds = 0;
     user.activities?.forEach((activity) => {
-        activity.intervals?.forEach((interval: Interval) => { // Added a check for activity.intervals
+        activity.intervals?.forEach((interval: Interval) => { 
             totalSeconds += interval.seconds + interval.minutes * 60 + interval.hours * 3600;
         });
     });
