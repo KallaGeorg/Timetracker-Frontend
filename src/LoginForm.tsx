@@ -9,7 +9,7 @@ import { Admin } from './Menue';
   }
 
 const LoginForm: React.FC<LoginFormProps> = React.memo(({ onUserLoginSuccess, onAdminLoginSuccess }) => {
-    console.log('LoginForm render testing');
+    console.log('LoginForm render testing ok');
 
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
@@ -47,7 +47,7 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
              headers: {
                 'Content-Type': 'application/json'
           },
-          body: JSON.stringify({name: username, password })
+          body: JSON.stringify({name: username, password: password })
         });
         if(adminRes.ok){
             const admin:Admin = await adminRes.json();
