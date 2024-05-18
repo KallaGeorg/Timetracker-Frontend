@@ -52,7 +52,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onLoginSuccess}) => 
         try{
             const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/user', {
                 method: 'POST',
-                mode: 'no-cors',
+              
                 headers: {
                     'Content-Type': 'application/json'
                 },
