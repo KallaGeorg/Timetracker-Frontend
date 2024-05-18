@@ -42,6 +42,7 @@ const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
             onUserLoginSuccess(user);
            
         }else{
+            console.log('User login failed, attempting admin login');
             const adminRes = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/admin/login', {
              method: 'POST',
              headers: {
