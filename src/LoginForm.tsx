@@ -33,16 +33,23 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       const loginUrl = isAdmin 
         ? 'https://stingray-app-2hrxo.ondigitalocean.app/admin/login' 
         : 'https://stingray-app-2hrxo.ondigitalocean.app/user/login';
+        const credentials = isAdmin 
+        ? { name: username, password } 
+        : { username, password };
+        console.log('Sending request to:', loginUrl);
+        console.log('Credentials:', credentials);
       const res = await fetch(loginUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(credentials),
       });
+      console.log('Response status:', res.status);
 
       if (res.ok) {
         const data = await res.json();
+        console.log('Response data:', data);
 
         if (isAdmin) {
           const admin: Admin = data;
