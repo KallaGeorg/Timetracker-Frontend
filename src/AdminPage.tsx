@@ -11,9 +11,13 @@ const AdminPage: React.FC = () => {
                 const res = await fetch("https://stingray-app-2hrxo.ondigitalocean.app/users");
                 
                 if (res.ok) {
-                    const data = await res.json();
+                    const data: User[] = await res.json();
+                    const usersWithInitializedActivities = data.map(user => ({
+                        ...user,
+                        activities: user.activities || []
+                    }));
                     
-                    setUsers(data);
+                    setUsers(usersWithInitializedActivities);
                 } else {
                     console.error("Failed to fetch users");
                 }
@@ -32,7 +36,7 @@ const AdminPage: React.FC = () => {
             <h3 className="adminTitle">Adminsida</h3>
             <div>
                 <ol style={{ listStyleType: "none" }}>
-                    {users.map((user) => (
+                    {users.map((user: User) => (
                         <li  className="adminList" key={user.id}>
                              <h3 className="clientTitle">Användare:</h3>
                             <h4>Användarnamn: {user.username}</h4>
