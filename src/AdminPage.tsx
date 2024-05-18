@@ -36,26 +36,27 @@ const AdminPage: React.FC = () => {
             <h3 className="adminTitle">Adminsida</h3>
             <div>
                 <ol style={{ listStyleType: "none" }}>
-                    {users.map((user: User) => (
-                        <li  className="adminList" key={user.id}>
-                             <h3 className="clientTitle">Användare:</h3>
-                            <h4>Användarnamn: {user.username}</h4>
-                            <h4>Förnamn: {user.firstname}</h4>
-                            <h4>Efternamn: {user.lastname}</h4>
-                            <h4>E-postadress: {user.email}</h4>
-                            <h3 className="clientTitle">Aktiviteter:</h3>
-                            <ol style={{ listStyleType: "none" }}>
+                {users.map((user: User) => (
+    <li className="adminList" key={user.id}>
+        <h3 className="clientTitle">Användare:</h3>
+        <h4>Användarnamn: {user.username}</h4>
+        <h4>Förnamn: {user.firstname}</h4>
+        <h4>Efternamn: {user.lastname}</h4>
+        <h4>E-postadress: {user.email}</h4>
+        <h3 className="clientTitle">Aktiviteter:</h3>
+        <ol style={{ listStyleType: "none" }}>
             {(user.activities || []).map((activity: Activity) => (
                 <li className="aktivitetList" key={activity.id}>
                     <h4>Aktivitet: {activity.name}</h4>
-                    <h4>Intervaller: {activity.intervals?.length || 0}</h4>
-                    <h4>Tid: {calculateTotalTime(activity.intervals)}</h4>
+                    <h4>Intervaller: {(activity.intervals || []).length || 0}</h4> // Added a check for activity.intervals
+                    <h4>Tid: {calculateTotalTime(activity.intervals || [])}</h4> // Added a check for activity.intervals
                 </li>
             ))}
         </ol>
-                            <h4>Total tid för alla aktiviteter: {calculateTotalTimeForUser(user)}</h4>
-                        </li>
-                    ))}
+        <h4>Total tid för alla aktiviteter: {calculateTotalTimeForUser(user)}</h4>
+    </li>
+))}
+
                 </ol>
             </div>
         </div>
@@ -76,7 +77,7 @@ const calculateTotalTime = (intervals: Interval[]): string => {
 const calculateTotalTimeForUser = (user: User): string => {
     let totalSeconds = 0;
     user.activities?.forEach((activity) => {
-        activity.intervals.forEach((interval: Interval) => {
+        activity.intervals?.forEach((interval: Interval) => { // Added a check for activity.intervals
             totalSeconds += interval.seconds + interval.minutes * 60 + interval.hours * 3600;
         });
     });
