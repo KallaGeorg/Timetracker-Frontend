@@ -16,7 +16,7 @@ const ChooseActivityList:React.FC<ChooseActivityListProps> = ( {user} ) => {
         const fetchData = async () => {
             if (user && user.id) {
                 try {
-                    const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/${user.id}/activities`);
+                    const res = await fetch(`https://stingray-app-2hrxo.ondigitalocean.app/user/${user.id}/activities`);
                    
                     if (!res.ok) {
                         throw new Error(`Failed to fetch activities: ${res.status} ${res.statusText}`);
