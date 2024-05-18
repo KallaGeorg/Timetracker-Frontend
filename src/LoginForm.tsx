@@ -27,7 +27,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
-        const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/login', {
+        const res = await fetch('https://stingray-app-2hrxo.ondigitalocean.app/user/login', {
             method: 'POST',
             
             headers: {
