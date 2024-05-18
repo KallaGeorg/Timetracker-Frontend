@@ -48,8 +48,8 @@ const AdminPage: React.FC = () => {
             {(user.activities || []).map((activity: Activity) => (
                 <li className="aktivitetList" key={activity.id}>
                     <h4>Aktivitet: {activity.name}</h4>
-                    <h4>Intervaller: {(activity.intervals || []).length || 0}</h4> // Added a check for activity.intervals
-                    <h4>Tid: {calculateTotalTime(activity.intervals || [])}</h4> // Added a check for activity.intervals
+                    <h4>Intervaller: {(activity.intervals || []).length || 0}</h4> 
+                    <h4>Tid: {calculateTotalTime(activity.intervals || [])}</h4> 
                 </li>
             ))}
         </ol>
